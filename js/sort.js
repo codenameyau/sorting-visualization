@@ -5,9 +5,12 @@
  */
 'use strict';
 
-function SortingVisualization(canvasID, settings) {
+
+/************************
+ * Visualization Canvas *
+ ************************/
+function SortingVisualization(canvasID) {
   this.canvasID = canvasID;
-  this.settings = settings;
   this.setupCanvas();
 }
 
@@ -17,6 +20,14 @@ SortingVisualization.prototype.setupCanvas = function() {
   this.ctx.imageSmoothingEnabled = false;
 };
 
+SortingVisualization.prototype.getWidth = function() {
+  return this.canvas.width;
+};
+
+SortingVisualization.prototype.getHeight = function() {
+  return this.canvas.height;
+};
+
 SortingVisualization.prototype.drawDemo = function() {
   this.ctx.fillStyle = 'rgb(200, 0, 0)';
   this.ctx.fillRect(0, 0, 50, 50);
@@ -24,3 +35,7 @@ SortingVisualization.prototype.drawDemo = function() {
   this.ctx.fillRect(30, 30, 50, 50);
   this.ctx.save();
 };
+
+/**********************
+ * Sorting Algorithms *
+ **********************/
