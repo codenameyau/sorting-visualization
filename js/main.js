@@ -5,6 +5,7 @@
  */
 'use strict';
 
+
 /************************
  * Visualization Canvas *
  ************************/
@@ -32,16 +33,22 @@ SortingVisualization.prototype.getHeight = function() {
 };
 
 SortingVisualization.prototype.visualizeArray = function() {
-
-};
-
-SortingVisualization.prototype.drawDemo = function() {
-  this.ctx.fillStyle = 'rgb(200, 0, 0)';
-  this.ctx.fillRect(0, 0, 50, 50);
+  // [TODO] Move computations out
   this.ctx.fillStyle = 'rgba(0, 0, 200, 0.5)';
-  this.ctx.fillRect(30, 30, 50, 50);
+  var size = this.array.length;
+  var width = this.getWidth();
+  var height = this.getHeight();
+  var wRatio = width / size;
+  var hRatio = height / size;
+
+  for (var i=0; i<size; i++) {
+    var barHeight = this.array[i] * hRatio;
+    this.ctx.fillRect(i*wRatio, height-barHeight, wRatio, barHeight);
+  }
+
   this.ctx.save();
 };
+
 
 /**********************
  * Sorting Algorithms *
@@ -90,7 +97,6 @@ SortingVisualization.prototype.bubbleSort = function() {
 (function() {
 
   var project = new SortingVisualization('imagination', 100);
-  project.drawDemo();
   console.log(project);
 
 })();
