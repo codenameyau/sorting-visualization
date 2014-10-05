@@ -11,10 +11,8 @@
  ****************/
 (function() {
 
-  // Setup visualization canvas
-  var canvasID = 'imagination';
-  var settings = {width: 800, height: 500};
-  var visualization = new SortingVisualization(canvasID, settings);
-  visualization.drawDemo();
+  var project = new SortingVisualization('imagination');
+  project.drawDemo();
+  console.log(project);
 
 })();
