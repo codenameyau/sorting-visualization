@@ -43,6 +43,7 @@ SortingVisualization.prototype.visualizeArray = function() {
   var height = this.getHeight();
   var wRatio = width / size;
   var hRatio = height / size;
+  this.clearCanvas();
 
   // Fill the canvas with bars
   for (var i=0; i<size; i++) {
@@ -85,17 +86,27 @@ SortingVisualization.prototype.shuffleArray = function() {
 
 SortingVisualization.prototype.insertionSort = function() {
   var a = this.array;
-  for (var i=1; i<a.length; i++) {
+  var len = a.length;
+  var ref = this;
+  var i = 1;
+
+  var continuation = function() {
+    // Continue loop
+    i += 1;
+    if (i >= len) { return; }
+
+    // Insertion sort logic
     var x = a[i];
     var j = i;
     while (j>0 && a[j-1] > x) {
       a[j] = a[j-1];
       j -= 1;
+      ref.visualizeArray();
     }
     a[j] = x;
-  }
-  this.clearCanvas();
-  this.visualizeArray();
+    window.setTimeout(continuation, 200);
+  };
+  continuation();
 };
 
 SortingVisualization.prototype.bubbleSort = function() {
