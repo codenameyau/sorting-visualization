@@ -32,17 +32,24 @@ SortingVisualization.prototype.getHeight = function() {
   return this.canvas.height;
 };
 
+SortingVisualization.prototype.clearCanvas = function() {
+  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+};
+
 SortingVisualization.prototype.visualizeArray = function() {
   // [TODO] Move computations out
-  this.ctx.fillStyle = 'rgba(0, 0, 200, 0.5)';
   var size = this.array.length;
   var width = this.getWidth();
   var height = this.getHeight();
   var wRatio = width / size;
   var hRatio = height / size;
 
+  // Fill the canvas with bars
   for (var i=0; i<size; i++) {
-    var barHeight = this.array[i] * hRatio;
+    var value = this.array[i];
+    var barHeight = value * hRatio;
+    var color = value + 30;
+    this.ctx.fillStyle = 'rgb(' + color + ',' + color + ',' + color + ')';
     this.ctx.fillRect(i*wRatio, height-barHeight, wRatio, barHeight);
   }
 
@@ -62,8 +69,8 @@ SortingVisualization.prototype.enableEventHandlers = function() {
   };
 
   // Step 2: Bind event handler to algorithm
-  this.algorithms.insertion.onclick = this.insertionSort;
-  this.algorithms.bubble.onclick = this.bubbleSort;
+  this.algorithms.insertion.onclick = this.insertionSort.bind(this);
+  this.algorithms.bubble.onclick = this.bubbleSort.bind(this);
 };
 
 SortingVisualization.prototype.populateNumbers = function(size) {
@@ -76,18 +83,23 @@ SortingVisualization.prototype.shuffleArray = function() {
   for (var j, x, i = a.length; i; j = Math.floor(Math.random() * i), x = a[--i], a[i] = a[j], a[j] = x);
 };
 
-SortingVisualization.prototype.selectAlgorithm = function(name) {
-  // [TODO] update algorithm name label
-  // [TODO] reshuffle numbers
-  this.algorithm = name;
-};
-
 SortingVisualization.prototype.insertionSort = function() {
-  console.log(1);
+  var a = this.array;
+  for (var i=1; i<a.length; i++) {
+    var x = a[i];
+    var j = i;
+    while (j>0 && a[j-1] > x) {
+      a[j] = a[j-1];
+      j -= 1;
+    }
+    a[j] = x;
+  }
+  this.clearCanvas();
+  this.visualizeArray();
 };
 
 SortingVisualization.prototype.bubbleSort = function() {
-  console.log(2);
+  console.log(this);
 };
 
 
