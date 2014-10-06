@@ -64,6 +64,7 @@ SortingVisualization.prototype.visualizeArray = function() {
 SortingVisualization.prototype.enableEventHandlers = function() {
   // Step 1: Define algorithm element id
   this.algorithm = 'Unsorted';
+  this.timeout = 20;
   this.algorithms = {
     insertion: document.getElementById('sort-insertion'),
     bubble: document.getElementById('sort-bubble'),
@@ -89,24 +90,30 @@ SortingVisualization.prototype.insertionSort = function() {
   var len = a.length;
   var ref = this;
   var i = 1;
+  var temp;
 
-  var continuation = function() {
-    // Continue loop
-    i += 1;
-    if (i >= len) { return; }
+  var loop = function() {
+    if (i < len) {
+      var j = i;
 
-    // Insertion sort logic
-    var x = a[i];
-    var j = i;
-    while (j>0 && a[j-1] > x) {
-      a[j] = a[j-1];
-      j -= 1;
-      ref.visualizeArray();
+      var logic = function() {
+        if (j > 0 && a[j-1] > a[j]) {
+          temp = a[j];
+          a[j] = a[j-1];
+          a[j-1] = temp;
+          j--;
+          ref.visualizeArray();
+          window.setTimeout(logic, 20);
+        }
+        else {
+          i++;
+          loop();
+        }
+      };
+      logic();
     }
-    a[j] = x;
-    window.setTimeout(continuation, 200);
   };
-  continuation();
+  loop();
 };
 
 SortingVisualization.prototype.bubbleSort = function() {
@@ -119,7 +126,7 @@ SortingVisualization.prototype.bubbleSort = function() {
  ****************/
 (function() {
 
-  var project = new SortingVisualization('imagination', 100);
+  var project = new SortingVisualization('imagination', 80);
   console.log(project);
 
 })();
