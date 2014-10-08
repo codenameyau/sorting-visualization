@@ -63,14 +63,15 @@ SortingVisualization.prototype.visualizeArray = function() {
  **********************/
 SortingVisualization.prototype.enableEventHandlers = function() {
   // Step 1: Define algorithm element id
-  this.algorithm = 'Unsorted';
   this.timeout = 20;
   this.algorithms = {
+    shuffle: document.getElementById('sort-shuffle'),
     insertion: document.getElementById('sort-insertion'),
     bubble: document.getElementById('sort-bubble'),
   };
 
   // Step 2: Bind event handler to algorithm
+  this.algorithms.shuffle.onclick = this.shuffleArray.bind(this);
   this.algorithms.insertion.onclick = this.insertionSort.bind(this);
   this.algorithms.bubble.onclick = this.bubbleSort.bind(this);
 };
@@ -83,6 +84,7 @@ SortingVisualization.prototype.populateNumbers = function(size) {
 SortingVisualization.prototype.shuffleArray = function() {
   var a = this.array;
   for (var j, x, i = a.length; i; j = Math.floor(Math.random() * i), x = a[--i], a[i] = a[j], a[j] = x);
+  this.visualizeArray();
 };
 
 SortingVisualization.prototype.insertionSort = function() {
@@ -103,7 +105,7 @@ SortingVisualization.prototype.insertionSort = function() {
           a[j-1] = temp;
           j--;
           ref.visualizeArray();
-          window.setTimeout(logic, 20);
+          window.setTimeout(logic, ref.timeout);
         }
         else {
           i++;
@@ -117,16 +119,32 @@ SortingVisualization.prototype.insertionSort = function() {
 };
 
 SortingVisualization.prototype.bubbleSort = function() {
-  console.log(this);
-};
+  var a = this.array;
+  var len = a.length;
+  var swap = true;
+  var i;
 
+  while (swap) {
+    swap = false;
+    for (i=0; i<len; i++) {
+      if (a[i] > a[i+1]) {
+        var temp = a[i];
+        a[i] = a[i+1];
+        a[i+1] = temp;
+        swap = true;
+      }
+    }
+  }
+
+  this.visualizeArray();
+};
 
 /****************
  * Main Program *
  ****************/
 (function() {
 
-  var project = new SortingVisualization('imagination', 80);
+  var project = new SortingVisualization('imagination', 50);
   console.log(project);
 
 })();
