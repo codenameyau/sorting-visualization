@@ -63,7 +63,7 @@ SortingVisualization.prototype.visualizeArray = function() {
  **********************/
 SortingVisualization.prototype.enableEventHandlers = function() {
   // Step 1: Define algorithm element id
-  this.timeout = 20;
+  this.timeout = 10;
   this.algorithms = {
     shuffle: document.getElementById('sort-shuffle'),
     insertion: document.getElementById('sort-insertion'),
@@ -122,21 +122,29 @@ SortingVisualization.prototype.bubbleSort = function() {
   var a = this.array;
   var len = a.length;
   var swap = true;
-  var i;
+  var ref = this;
+  var i = 0;
 
-  while (swap) {
-    swap = false;
-    for (i=0; i<len; i++) {
+  var logic = function() {
+    if (i < len) {
       if (a[i] > a[i+1]) {
         var temp = a[i];
         a[i] = a[i+1];
         a[i+1] = temp;
         swap = true;
       }
+      i++;
+      ref.visualizeArray();
+      window.setTimeout(logic, ref.timeout);
     }
-  }
+    else if (swap) {
+      swap = false;
+      i = 0;
+      logic();
+    }
+  };
 
-  this.visualizeArray();
+  logic();
 };
 
 /****************
