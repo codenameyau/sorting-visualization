@@ -10,7 +10,7 @@
  * Visualization Canvas *
  ************************/
 function SortingVisualization(canvasID, size) {
-  this.timeout = 10;
+  this.timeout = 100;
   this.canvasID = canvasID;
   this.setupCanvas();
   this.populateNumbers(size);
@@ -76,7 +76,7 @@ SortingVisualization.prototype.populateNumbers = function(size) {
 
 SortingVisualization.prototype.shuffleArray = function() {
   var a = this.array;
-  for (var j, x, i = a.length; i; j = Math.floor(Math.random() * i), x = a[--i], a[i] = a[j], a[j] = x);
+  for (var j, x, i = a.length; i; j = Math.floor(Math.random() * i), x = a[--i], a[i] = a[j], a[j] = x) {}
   this.visualizeArray();
 };
 
@@ -144,7 +144,7 @@ SortingVisualization.prototype.quickSort = function() {
   var a = this.array;
 
   var randomIndex = function(min, max) {
-    return Math.random() * (max - min) + min;
+    return Math.floor(Math.random() * (max - min) + min);
   };
 
   var partition = function(left, right) {
@@ -153,7 +153,7 @@ SortingVisualization.prototype.quickSort = function() {
     var current = left;
     a[pivotIndex] = a[right];
     a[right] = pivotValue;
-    for (var i=left, end=right-1; i<end; i++) {
+    for (var i=left, end=right; i<end; i++) {
       if (a[i] < pivotValue) {
         var temp = a[i];
         a[i] = a[current];
@@ -163,7 +163,7 @@ SortingVisualization.prototype.quickSort = function() {
     }
     a[right] = a[current];
     a[current] = pivotValue;
-    return pivotValue;
+    return current;
   };
 
   var qsort = function(i, k) {
@@ -174,7 +174,7 @@ SortingVisualization.prototype.quickSort = function() {
     }
   };
 
-  qsort(0, a.length);
+  qsort(0, a.length-1);
   this.visualizeArray();
 };
 
@@ -182,5 +182,5 @@ SortingVisualization.prototype.quickSort = function() {
  * Main Program *
  ****************/
 (function() {
-  new SortingVisualization('imagination', 50);
+  new SortingVisualization('imagination', 20);
 })();
