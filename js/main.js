@@ -10,6 +10,7 @@
  * Visualization Canvas *
  ************************/
 function SortingVisualization(canvasID, size) {
+  this.timeout = 10;
   this.canvasID = canvasID;
   this.setupCanvas();
   this.populateNumbers(size);
@@ -62,18 +63,10 @@ SortingVisualization.prototype.visualizeArray = function() {
  * Sorting Algorithms *
  **********************/
 SortingVisualization.prototype.enableEventHandlers = function() {
-  // Step 1: Define algorithm element id
-  this.timeout = 10;
-  this.algorithms = {
-    shuffle: document.getElementById('sort-shuffle'),
-    insertion: document.getElementById('sort-insertion'),
-    bubble: document.getElementById('sort-bubble'),
-  };
-
-  // Step 2: Bind event handler to algorithm
-  this.algorithms.shuffle.onclick = this.shuffleArray.bind(this);
-  this.algorithms.insertion.onclick = this.insertionSort.bind(this);
-  this.algorithms.bubble.onclick = this.bubbleSort.bind(this);
+  document.getElementById('sort-shuffle').onclick = this.shuffleArray.bind(this);
+  document.getElementById('sort-insertion').onclick = this.insertionSort.bind(this);
+  document.getElementById('sort-bubble').onclick = this.bubbleSort.bind(this);
+  document.getElementById('sort-quick').onclick = this.quickSort.bind(this);
 };
 
 SortingVisualization.prototype.populateNumbers = function(size) {
@@ -139,20 +132,21 @@ SortingVisualization.prototype.bubbleSort = function() {
     }
     else if (swap) {
       swap = false;
+      len--;
       i = 0;
       logic();
     }
   };
-
   logic();
+};
+
+SortingVisualization.prototype.quickSort = function() {
+
 };
 
 /****************
  * Main Program *
  ****************/
 (function() {
-
-  var project = new SortingVisualization('imagination', 50);
-  console.log(project);
-
+  new SortingVisualization('imagination', 50);
 })();
