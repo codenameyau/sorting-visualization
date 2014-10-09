@@ -141,7 +141,41 @@ SortingVisualization.prototype.bubbleSort = function() {
 };
 
 SortingVisualization.prototype.quickSort = function() {
+  var a = this.array;
 
+  var randomIndex = function(min, max) {
+    return Math.random() * (max - min) + min;
+  };
+
+  var partition = function(left, right) {
+    var pivotIndex = randomIndex(left, right);
+    var pivotValue = a[pivotIndex];
+    var current = left;
+    a[pivotIndex] = a[right];
+    a[right] = pivotValue;
+    for (var i=left, end=right-1; i<end; i++) {
+      if (a[i] < pivotValue) {
+        var temp = a[i];
+        a[i] = a[current];
+        a[current] = temp;
+        current++;
+      }
+    }
+    a[right] = a[current];
+    a[current] = pivotValue;
+    return pivotValue;
+  };
+
+  var qsort = function(i, k) {
+    if (i < k) {
+      var pivot = partition(i, k);
+      qsort(i, pivot-1);
+      qsort(pivot+1, k);
+    }
+  };
+
+  qsort(0, a.length);
+  this.visualizeArray();
 };
 
 /****************
