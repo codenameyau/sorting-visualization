@@ -10,7 +10,7 @@
  * Visualization Canvas *
  ************************/
 function SortingVisualization(canvasID, size) {
-  this.timeout = 100;
+  this.timeout = 50;
   this.canvasID = canvasID;
   this.setupCanvas();
   this.populateNumbers(size);
@@ -50,7 +50,7 @@ SortingVisualization.prototype.visualizeArray = function() {
   for (var i=0; i<size; i++) {
     var value = this.array[i];
     var barHeight = value * hRatio;
-    var color = value + 30;
+    var color = value + 20 + i;
     this.ctx.fillStyle = 'rgb(' + color + ',' + color + ',' + color + ')';
     this.ctx.fillRect(i*wRatio, height-barHeight, wRatio, barHeight);
   }
@@ -147,30 +147,28 @@ SortingVisualization.prototype.quickSort = function() {
     return Math.floor(Math.random() * (max - min) + min);
   };
 
-  var partition = function(left, right) {
-    var pivotIndex = randomIndex(left, right);
-    var pivotValue = a[pivotIndex];
-    var current = left;
-    a[pivotIndex] = a[right];
-    a[right] = pivotValue;
-    for (var i=left, end=right; i<end; i++) {
-      if (a[i] < pivotValue) {
-        var temp = a[i];
-        a[i] = a[current];
-        a[current] = temp;
-        current++;
+  var qsort = function(left, right) {
+    if (left < right) {
+      // Partition left and right
+      var pivotIndex = randomIndex(left, right);
+      var pivotValue = a[pivotIndex];
+      var current = left;
+      a[pivotIndex] = a[right];
+      a[right] = pivotValue;
+      for (var i=left, end=right; i<end; i++) {
+        if (a[i] < pivotValue) {
+          var temp = a[i];
+          a[i] = a[current];
+          a[current] = temp;
+          current++;
+        }
       }
-    }
-    a[right] = a[current];
-    a[current] = pivotValue;
-    return current;
-  };
+      a[right] = a[current];
+      a[current] = pivotValue;
 
-  var qsort = function(i, k) {
-    if (i < k) {
-      var pivot = partition(i, k);
-      qsort(i, pivot-1);
-      qsort(pivot+1, k);
+      // Recursively sort partitions
+      qsort(left, current-1);
+      qsort(current+1, right);
     }
   };
 
