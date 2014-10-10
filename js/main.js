@@ -2,6 +2,11 @@
  * sorting-visualization
  * codenameyau.github.io
  * GNU Public License
+ *
+ * Note:
+ * Since JavaScript doesn't have a sleep function,
+ * the algorithm visualizations required transforming
+ * loops to recursion and using setTimeout.
  */
 'use strict';
 
@@ -142,6 +147,7 @@ SortingVisualization.prototype.bubbleSort = function() {
 
 SortingVisualization.prototype.quickSort = function() {
   var a = this.array;
+  var ref = this;
 
   var randomIndex = function(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
@@ -153,27 +159,36 @@ SortingVisualization.prototype.quickSort = function() {
       var pivotIndex = randomIndex(left, right);
       var pivotValue = a[pivotIndex];
       var current = left;
+      var i = left;
       a[pivotIndex] = a[right];
       a[right] = pivotValue;
-      for (var i=left, end=right; i<end; i++) {
-        if (a[i] < pivotValue) {
-          var temp = a[i];
-          a[i] = a[current];
-          a[current] = temp;
-          current++;
-        }
-      }
-      a[right] = a[current];
-      a[current] = pivotValue;
 
-      // Recursively sort partitions
-      qsort(left, current-1);
-      qsort(current+1, right);
+      var partitionLoop = function() {
+        if (i < right) {
+          if (a[i] < pivotValue) {
+            var temp = a[i];
+            a[i] = a[current];
+            a[current] = temp;
+            current++;
+          }
+          ref.visualizeArray();
+          window.setTimeout(partitionLoop, ref.timeout);
+        }
+        else {
+          a[right] = a[current];
+          a[current] = pivotValue;
+          ref.visualizeArray();
+          qsort(left, current-1);
+          qsort(current+1, right);
+        }
+        i++;
+        ref.visualizeArray();
+      };
+      partitionLoop();
     }
   };
 
   qsort(0, a.length-1);
-  this.visualizeArray();
 };
 
 /****************
