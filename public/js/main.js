@@ -197,7 +197,6 @@ SortingVisualization.prototype.quickSort = function() {
       partitionLoop();
     }
   };
-
   qsort(0, a.length-1);
 };
 
